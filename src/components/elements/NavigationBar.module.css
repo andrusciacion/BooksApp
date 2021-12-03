@@ -1,27 +1,23 @@
-.nav {
+.Navigation {
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 80px;
   width: 100%;
-  background: linear-gradient(
-    to left,
-    rgba(180, 1, 112, 0.815),
-    rgba(255, 166, 0, 0.801)
-  );
+  background-color: rgb(72, 161, 77);
 }
 
-.nav h1 {
+.Navigation h1 {
   margin-left: 30px;
-  font-size: 30px;
+  font-size: 35px;
 }
 
-.nav a {
+.Navigation a {
   text-decoration: none;
-  color: rgb(43, 43, 122);
+  color: rgb(255, 255, 255);
 }
 
-.nav-elements {
+.NavigationElements {
   display: flex;
   flex-direction: row;
   width: 400px;
@@ -30,14 +26,14 @@
   margin-top: 0;
 }
 
-.nav-elements li {
+.NavigationElements li {
   display: flex;
   align-items: center;
   height: 80px;
   margin-inline: auto;
 }
 
-.nav-elements a {
+.NavigationElements a {
   padding-inline: 10px;
   font-size: 25px;
   font-weight: bolder;
@@ -45,6 +41,7 @@
   color: white;
 }
 
-.nav-elements li:hover {
-  background-color: royalblue;
+.NavigationElements li:hover {
+  background-color: rgba(211, 211, 211, 0.397);
+  border-radius: 20px;
 }

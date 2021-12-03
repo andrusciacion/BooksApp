@@ -1,14 +1,14 @@
 import React from 'react';
-import './NavigationStyle.css';
+import styles from './NavigationBar.module.css';
 
-export default function NavigationComponent() {
+export default function NavigationBar() {
   return (
     <div>
-      <nav className='nav'>
+      <nav className={styles.Navigation}>
         <h1>
           <a href='/'>iBook</a>
         </h1>
-        <ul className='nav-elements'>
+        <ul className={styles.NavigationElements}>
           <li>
             <a href='/'>Home</a>
           </li>

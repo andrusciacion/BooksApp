@@ -1,5 +1,4 @@
-import './App.css';
-import NavigationElement from './components/elements/NavigationElement';
+import NavigationBar from './components/elements/NavigationBar';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './components/HomeComponent';
 
@@ -7,7 +6,7 @@ function App() {
   return (
     <div className='App'>
       <BrowserRouter>
-        <NavigationElement />
+        <NavigationBar />
         <Routes>
           <Route path='/' element={<Home />} />
         </Routes>

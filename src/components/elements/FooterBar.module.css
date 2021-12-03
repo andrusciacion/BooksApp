@@ -1,5 +1,4 @@
-.footer {
-  /* position: fixed; */
+.Footer {
   bottom: 0;
   display: flex;
   align-items: center;
@@ -9,7 +8,7 @@
 }
 
 @media (max-width: 700px) {
-  .footer {
+  .Footer {
     height: 50px;
   }
 }

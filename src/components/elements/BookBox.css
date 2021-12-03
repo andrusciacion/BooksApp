@@ -1,0 +1,32 @@
+.book-box {
+  width: calc(100vw / 3.5);
+  margin-inline: 10px;
+  text-align: center;
+  border-radius: 20px;
+  transition: 1s;
+  min-width: 200px;
+}
+
+.book-box img {
+  width: 200px;
+  height: 300px;
+  object-fit: contain;
+  overflow: hidden;
+  min-width: 150px;
+}
+
+.book-box:hover {
+  transform: scale(1.1);
+  transition-duration: 1s;
+  background: linear-gradient(to bottom, transparent, orange);
+}
+
+@media (max-width: 700px) {
+  .book-box:hover {
+    transform: none;
+    transition-duration: 0;
+  }
+  .book-box {
+    width: 100%;
+  }
+}

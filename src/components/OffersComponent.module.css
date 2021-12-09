@@ -1,0 +1,162 @@
+body {
+  background-color: rgb(231, 230, 230);
+}
+
+.BooksList {
+  margin-top: 40px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: repeat(4, 3fr);
+  grid-template-rows: repeat(2, 2fr);
+  grid-column-gap: 10px;
+  grid-row-gap: 20px;
+}
+
+.ButtonMargin {
+  width: 50px;
+  font-weight: bold;
+  border-radius: 10px;
+  font-size: 20px;
+  color: white;
+  background-color: #00cc99bd;
+  border-width: 0;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.ButtonMiddle {
+  width: 120px;
+  font-weight: bold;
+  border-radius: 10px;
+  font-size: 20px;
+  color: white;
+  background-color: #00cc99bd;
+  border-width: 0;
+  margin-inline: 70px;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.ButtonMiddle:active,
+.ButtonMargin:active {
+  box-shadow: none;
+  transition: 0.2s;
+}
+
+.Link {
+  text-decoration: none;
+  color: black;
+  height: 100%;
+}
+
+.MiddleButtons {
+  display: flex;
+}
+
+.NoBooks {
+  padding-top: 100px;
+  height: 100%;
+  align-self: center;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.OffersComponent {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.Pagination {
+  display: flex;
+  width: 80%;
+  height: 40px;
+  padding-block: 40px;
+  justify-content: space-between;
+  align-self: center;
+}
+
+.PageNumber {
+  width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+  padding-inline: 20px;
+  background-color: #00cc9948;
+  border-radius: 15px;
+}
+
+.SearchBar {
+  display: flex;
+  justify-content: center;
+  padding-block: 20px;
+}
+
+.SearchInput {
+  padding-left: 20px;
+  height: 40px;
+  font-size: 18px;
+  margin-right: 20px;
+  width: 500px;
+  border-radius: 10px;
+  border-width: 0;
+  transition: 1s;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  transition: 0.2s;
+}
+
+.SearchInput:focus {
+  outline: none;
+  transition: 2s;
+}
+
+.SearchButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  border-radius: 10px;
+  border-width: 0;
+  font-weight: bold;
+  font-size: 20px;
+  background-color: #00cc99bd;
+  cursor: pointer;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  transition: 0.2s;
+}
+
+.SearchButton:active {
+  box-shadow: none;
+  transition: 0.2s;
+}
+
+@media (max-width: 1200px) {
+  .Button {
+    width: 100px;
+    font-size: 90%;
+  }
+  .PageNumber {
+    font-size: 90%;
+  }
+}
+
+@media (max-width: 900px) {
+  .BooksList {
+    grid-template-columns: repeat(3, 3fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .BooksList {
+    grid-template-columns: repeat(2, 3fr);
+    width: 96%;
+    margin-inline: 0;
+  }
+}

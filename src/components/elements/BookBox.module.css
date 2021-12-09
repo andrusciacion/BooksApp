@@ -1,10 +1,11 @@
 .BookBox {
-  width: calc(100vw / 3.5);
+  width: calc(100vw / 5);
   margin-inline: 10px;
   text-align: center;
   border-radius: 20px;
   transition: 1s;
   min-width: 200px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 
 .BookBox img {

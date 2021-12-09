@@ -4,7 +4,8 @@
   justify-content: space-between;
   height: 80px;
   width: 100%;
-  background-color: rgb(72, 161, 77);
+  background: linear-gradient(217deg, #6600ff, rgba(255, 0, 0, 0) 80%),
+    linear-gradient(127deg, #00cc99, rgba(0, 0, 255, 0) 80%);
 }
 
 .Navigation h1 {
@@ -13,17 +14,27 @@
 }
 
 .Navigation a {
+  height: 100%;
+  display: flex;
+  align-items: center;
   text-decoration: none;
   color: rgb(255, 255, 255);
+}
+
+.NavigationLogo {
+  display: flex;
+  justify-content: center;
+  width: 50px;
 }
 
 .NavigationElements {
   display: flex;
   flex-direction: row;
-  width: 400px;
+  width: 500px;
   margin-bottom: 0;
   list-style-type: none;
   margin-top: 0;
+  margin-right: 30px;
 }
 
 .NavigationElements li {
@@ -43,5 +54,15 @@
 
 .NavigationElements li:hover {
   background-color: rgba(211, 211, 211, 0.397);
-  border-radius: 20px;
+  border-radius: 10px;
+}
+
+@media (max-width: 700px) {
+  .Navigation h1,
+  .NavigationElements a {
+    font-size: 20px;
+  }
+  .NavigationElements {
+    width: 300px;
+  }
 }

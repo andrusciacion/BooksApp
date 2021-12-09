@@ -4,6 +4,7 @@ import styles from './HomeComponent.module.css';
 import books from '../books/books.json';
 import BookBox from './elements/BookBox';
 import Footer from './elements/FooterBar';
+import HomeImage from '../contentImages/bookshop-logo.svg';
 
 export default class HomeComponent extends Component {
   state = {
@@ -28,17 +29,23 @@ export default class HomeComponent extends Component {
     return (
       <div className={styles.HomeComponent}>
         <section className={styles.WelcomeSection}>
-          <h1>Welcome to our book shop</h1>
+          <img className={styles.HomeImage} src={HomeImage} alt='Book' />
+          {/* <h1>Welcome to our book shop</h1> */}
         </section>
         <h1>Some offers</h1>
         <section className={styles.HomeBookSection}>
-          {this.state.firstBooks.length > 2 ? (
-            <div className={styles.BooksItems}>
-              <BookBox books={this.state.firstBooks[0]} />
-              <BookBox books={this.state.firstBooks[1]} />
-              <BookBox books={this.state.firstBooks[2]} />
-            </div>
-          ) : null}
+          <div className={styles.BooksItems}>
+            {this.state.firstBooks.map((book, key) => (
+              <Link
+                to='/details'
+                state={{ book: book }}
+                key={key}
+                style={{ color: 'black', textDecoration: 'none' }}
+              >
+                <BookBox books={book} />
+              </Link>
+            ))}
+          </div>
         </section>
         <Link className={styles.Link} to='/offers'>
           Show more...

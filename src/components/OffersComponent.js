@@ -1,24 +1,44 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import styles from './OffersComponent.module.css';
-import books from '../books/books.json';
 import BookBox from './elements/BookBox';
 import { Link } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
+import store from '../store';
+import { addBookCart } from '../actions';
 
 export default class OffersComponent extends Component {
   state = {
+    booksFromStorage: [],
     books: [],
     booksForSearch: [],
     selectedBook: '',
-    nrOfBooks: 8,
+    nrOfBooks: 12,
     currentPage: 1,
     searchValue: '',
     noBook: 'none',
+    display: 'flex',
   };
 
   componentDidMount() {
-    this.getBooksList();
+    // this.getBooksFromStore().then(this.getBooksList());
+    this.getBooks();
     this.scrollToTop();
+  }
+
+  async getBooks() {
+    let url = 'http://localhost:3000/books-list';
+    await fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.setState({ booksFromStorage: data });
+      })
+      .then(() => this.getBooksList());
+  }
+
+  async getBooksFromStore() {
+    this.state.booksFromStorage = store.getState();
   }
 
   getBooksList() {
@@ -26,10 +46,11 @@ export default class OffersComponent extends Component {
     data[0] = [];
     let page = this.state.currentPage;
     let nrOfBooks = this.state.nrOfBooks;
-    books.sort(function (a, b) {
+    console.log(this.state.booksFromStorage);
+    this.state.booksFromStorage.sort(function (a, b) {
       return a.title.localeCompare(b.title);
     });
-    books.forEach((item, key) => {
+    this.state.booksFromStorage.forEach((item, key) => {
       if (key < page * nrOfBooks) {
         data[page - 1].push(item);
       } else {
@@ -37,9 +58,12 @@ export default class OffersComponent extends Component {
         data[page - 1] = [];
         data[page - 1].push(item);
       }
-      this.setState({ books: data });
-      this.setState({ currentPage: 0 });
-      this.setState({ noBook: 'none' });
+      this.setState({
+        books: data,
+        currentPage: 0,
+        noBook: 'none',
+        display: 'none',
+      });
     });
   }
 
@@ -91,14 +115,14 @@ export default class OffersComponent extends Component {
   }
 
   updateSearchValue(value) {
-    let input = value.target.value.toLowerCase();
+    let input = value.target.value;
     if (input === '') this.getBooksList();
     this.setState({ searchValue: input });
     let bookArray = [];
     bookArray[0] = [];
-    books.map((book) => {
-      let bookTitle = book.title.toLowerCase().match(/\w+/g);
-      if (bookTitle.indexOf(input) >= 0) {
+    this.state.booksFromStorage.forEach((book) => {
+      let bookTitle = book.title.toLowerCase();
+      if (bookTitle.indexOf(input.toLowerCase()) >= 0) {
         bookArray[0].push(book);
       } else {
         return;
@@ -118,18 +142,31 @@ export default class OffersComponent extends Component {
     }
   };
 
+  addToStoreCart = () => {
+    store.dispatch(addBookCart({ quantity: 1 }));
+  };
+
   render() {
     let currentPage = [];
     return (
       <div className={styles.OffersComponent}>
+        {/* <GetStoredBooks useCallback={this.displayBooks} /> */}
         <div className={styles.SearchBar}>
           <input
+            list='search'
             className={styles.SearchInput}
             type='text'
             placeholder='Search ...'
             value={this.state.searchValue}
             onChange={(event) => this.updateSearchValue(event)}
           />
+
+          <datalist id='search'>
+            {this.state.booksFromStorage.map((item, key) => (
+              <option key={key}>{item.title}</option>
+            ))}
+          </datalist>
+
           <div
             className={styles.SearchButton}
             onClick={() => this.searchBook()}
@@ -143,25 +180,26 @@ export default class OffersComponent extends Component {
         >
           We can't find this book
         </div>
+        <DisplayLoadingScreen display={this.state.display} />
         <div className={styles.BooksList}>
           {this.state.books.forEach((item, key) => {
             if (this.state.currentPage === key) {
               currentPage = item;
             }
           })}
+
           {currentPage.map((item, key) => {
             if (item === 'null') {
               this.searchBookStatus();
-              return;
+              return null;
             } else {
               return (
-                <Link
-                  key={key}
-                  className={styles.Link}
-                  to={{ pathname: '/details' }}
-                  state={{ book: item }}
-                >
+                <div>
+                  {item.stock === 0 && (
+                    <p className={styles.StockOut}>Out of stock</p>
+                  )}
                   <BookBox
+                    key={key}
                     books={item}
                     style={{
                       transform: 'scale(1)',
@@ -170,7 +208,8 @@ export default class OffersComponent extends Component {
                       paddingBlock: '20px',
                     }}
                   />
-                </Link>
+                  {/* </Link> */}
+                </div>
               );
             }
           })}
@@ -195,7 +234,14 @@ export default class OffersComponent extends Component {
               Previous
             </button>
             <div className={styles.PageNumber}>
-              {this.state.currentPage + 1 + ' ... ' + this.state.books.length}
+              {this.state.currentPage +
+                1 +
+                ' ... ' +
+                [
+                  this.state.books.length === 0
+                    ? this.state.books.length + 1
+                    : this.state.books.length,
+                ]}
             </div>
             <button
               className={styles.ButtonMiddle}
@@ -216,3 +262,22 @@ export default class OffersComponent extends Component {
     );
   }
 }
+
+function DisplayLoadingScreen(display) {
+  return (
+    <div
+      style={{ display: `${display.display}` }}
+      className={styles.LoadingScreenText}
+    >
+      <div className={styles.LoadingScreen} />
+    </div>
+  );
+}
+
+// function GetStoredBooks(props) {
+//   const books = useSelector((list) => list);
+//   // useEffect(() => {
+//   props.useCallback(books);
+//   // });
+//   return null;
+// }

@@ -1,0 +1,77 @@
+.Parent {
+  display: flex;
+  flex-direction: column;
+}
+
+.EditBook {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.EditedInfo,
+.InitialInfo {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+}
+
+.InitialInfo {
+  margin-right: 30px;
+}
+
+.EditedInfo input,
+.InitialInfo input {
+  text-align: center;
+  font-size: 30px;
+  padding: 10px;
+  border-radius: 15px;
+  border: none;
+}
+
+.InitialInfo input {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  cursor: default;
+}
+
+.InitialInfo input:focus {
+  outline: none;
+}
+
+.InitialInfo label {
+  margin-top: 10px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.EditedInfo input {
+  margin-top: 42px;
+}
+
+.EditedInfo input:focus {
+  outline: none;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.SaveButton {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  margin-inline: auto;
+  width: 120px;
+  height: 40px;
+  font-weight: bold;
+  font-size: 24px;
+  background-color: #00cc99;
+  color: white;
+  border: none;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  border-radius: 15px;
+}
+
+.SaveButton:hover {
+  cursor: pointer;
+}
+
+.SaveButton:active {
+  box-shadow: none;
+}

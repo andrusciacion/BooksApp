@@ -6,8 +6,35 @@
   flex-direction: column;
 }
 
+.TotalButton {
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 24px;
+  border: 1px gray solid;
+  border-radius: 10px;
+  padding-block: 5px;
+}
+
+.CheckoutButton {
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 24px;
+  color: white;
+  background-color: rgba(72, 161, 77, 1);
+  border-radius: 10px;
+  border: none;
+  padding: 10px;
+  margin-bottom: 50px;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.CheckoutButton:active {
+  box-shadow: none;
+}
+
 .Books {
-  padding-top: 50px;
+  padding-top: 25px;
   padding-bottom: 50px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -26,18 +53,34 @@
 }
 
 .RemoveBox {
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center; */
   background-color: #6600ff15;
   border-radius: 15px;
+}
+
+.RemoveBox:hover > .Information {
+  visibility: visible;
+}
+
+.Information {
+  position: absolute;
+  visibility: hidden;
+  font-size: 20px;
+  margin-top: 45px;
+  width: 100px;
+  text-align: center;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.603);
+  border-radius: 10px;
 }
 
 .RemoveButton {
   height: 40px;
   width: 100%;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
+  border-radius: 15px;
+  margin-bottom: 35px;
   border: none;
   background-color: rgba(255, 0, 119, 0.281);
   font-size: 25px;

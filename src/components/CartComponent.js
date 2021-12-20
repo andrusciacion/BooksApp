@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './CartComponent.module.css';
 import Image from '../contentImages/empty.svg';
-import books from '../books/books.json';
+import store from '../store';
 import BookBox from './elements/BookBox';
+import { addBookCart } from '../actions';
 
 export default class CartComponent extends Component {
   state = {
@@ -11,11 +12,15 @@ export default class CartComponent extends Component {
     books: [],
     booksInCart: [],
     numberOfBooks: [],
+    totalPrice: 0,
     refresh: false,
   };
 
   async componentDidMount() {
-    await this.getAllBooks().then(this.getListCart()).then(this.getBooksCart());
+    await this.getBooks()
+      .then(() => this.getListCart())
+      .then(() => this.getBooksCart());
+    // await this.getBooks();
   }
 
   allStorage() {
@@ -23,18 +28,38 @@ export default class CartComponent extends Component {
       keys = Object.keys(localStorage),
       i = 0,
       key;
-
     for (; (key = keys[i]); i++) {
       archive.push(key + '=' + localStorage.getItem(key));
     }
-
     return archive;
   }
 
-  async getAllBooks() {
-    this.setState({ allBooks: [] });
-    books.forEach((item, key) => {
-      this.state.allBooks[key] = item;
+  // async getAllBooks() {
+  //   this.setState({ allBooks: [] });
+  //   store.getState().forEach((item, key) => {
+  //     this.state.allBooks[key] = item;
+  //   });
+  // }
+
+  async getBooks() {
+    let url = 'http://localhost:3000/books-list';
+    await fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.setState({ allBooks: data });
+      });
+  }
+
+  async sendData(book) {
+    let url = `http://localhost:3000/books-list/${book.id}`;
+    await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(book),
     });
   }
 
@@ -43,12 +68,12 @@ export default class CartComponent extends Component {
     this.state.allBooks.sort(function (a, b) {
       return a.title.localeCompare(b.title);
     });
-    console.log(this.state.booksInCart);
     this.state.allBooks.forEach((item) => {
       for (let i = 0; i < this.state.booksInCart.length; i++) {
         if (item.title === this.state.booksInCart[i].book) {
           item.quantity = this.state.booksInCart[i].number;
           data.push(item);
+          this.state.totalPrice += item.price * item.quantity;
         }
       }
       this.setState({ books: data });
@@ -65,42 +90,77 @@ export default class CartComponent extends Component {
     }
   }
 
-  removeBook(book, key) {
-    var retVal = window.confirm('Do you want to delete this book from cart? ');
-    if (retVal == true) {
+  async removeBook(book, index) {
+    let removedBooks = window.prompt('Number of removed books', book.quantity);
+    if (removedBooks > 0 && removedBooks < book.quantity) {
+      localStorage.setItem(book.title, (book.quantity -= removedBooks));
+    } else if (removedBooks === book.quantity) {
       localStorage.removeItem(book.title);
-      this.refreshPage(key);
-      return true;
-    } else {
-      return false;
     }
+    console.log(book);
+    await this.sendData({ ...book, stock: book.stock + Number(removedBooks) });
+    this.refreshPage(index, book.quantity, removedBooks);
   }
 
-  refreshPage = (props) => {
-    this.state.books.splice(props, 1);
-    this.setState({ refresh: true }, () => this.setState({ refresh: false }));
+  refreshPage = (...props) => {
+    let totalPrice = 0;
+    props[1] === props[2] && this.state.books.splice(props[0], 1);
+    this.state.books.forEach((item) => {
+      totalPrice += item.price;
+    });
+    this.setState({ totalPrice: totalPrice * props[1] });
+    this.refreshNavBar();
   };
+
+  refreshNavBar = () => {
+    store.dispatch(addBookCart({ quantity: 1 }));
+  };
+
+  async checkoutCart() {
+    for (let book of this.state.books) {
+      localStorage.removeItem(book.title);
+    }
+    this.setState({ books: [], totalPrice: 0 });
+    this.refreshNavBar();
+  }
 
   render() {
     return (
-      <div className={styles.Cart}>
+      <div id='cart' className={styles.Cart}>
+        {this.state.totalPrice > 0 && (
+          <button className={styles.TotalButton}>
+            Total: {this.state.totalPrice}$
+          </button>
+        )}
         {this.state.books.length > 0 ? (
           <div className={styles.Books}>
             {this.state.books.map((item, key) => (
               <div className={styles.RemoveBox}>
-                <CartList book={item} />
+                <div className={styles.Information}>
+                  Books:
+                  <strong>{item.quantity}</strong>
+                </div>
                 <button
                   className={styles.RemoveButton}
                   onClick={() => this.removeBook(item, key)}
                   type='button'
                 >
-                  Remove {item.quantity}
+                  Remove
                 </button>
+                <CartList key={key} book={item} />
               </div>
             ))}
           </div>
         ) : (
           <NoBooks />
+        )}
+        {this.state.totalPrice > 0 && (
+          <button
+            className={styles.CheckoutButton}
+            onClick={() => this.checkoutCart()}
+          >
+            Checkout
+          </button>
         )}
       </div>
     );

@@ -1,0 +1,63 @@
+.Books {
+  padding-top: 25px;
+  padding-bottom: 50px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 30px;
+}
+
+.FavouriteBooks {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  flex-direction: column;
+}
+
+.FavouriteBox {
+  padding-top: 15px;
+  background-color: #ff110015;
+  border-radius: 15px;
+}
+
+.NoFavouriteText {
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.StockOut {
+  position: absolute;
+  z-index: 1;
+  color: white;
+  font-size: 25px;
+  margin-left: 20px;
+  padding: 20px;
+  font-weight: bold;
+  border-radius: 20px;
+  background-color: red;
+  cursor: default;
+}
+
+.Image {
+  width: 30%;
+}
+
+@media (max-width: 1400px) {
+  .Books {
+    grid-template-columns: repeat(4, 3fr);
+  }
+}
+
+@media (max-width: 1200px) {
+  .Books {
+    grid-template-columns: repeat(3, 3fr);
+  }
+}
+
+@media (max-width: 800px) {
+  .Books {
+    grid-template-columns: repeat(2, 3fr);
+  }
+}

@@ -6,8 +6,9 @@ body {
   margin-top: 40px;
   margin-inline: auto;
   display: grid;
-  grid-template-columns: repeat(4, 3fr);
-  grid-template-rows: repeat(2, 2fr);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 1fr);
   grid-column-gap: 10px;
   grid-row-gap: 20px;
 }
@@ -34,7 +35,7 @@ body {
   color: white;
   background-color: #00cc99bd;
   border-width: 0;
-  margin-inline: 70px;
+  margin-inline: 10px;
   border-radius: 10px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
   transition: 0.2s;
@@ -47,10 +48,122 @@ body {
   transition: 0.2s;
 }
 
-.Link {
-  text-decoration: none;
-  color: black;
-  height: 100%;
+.LoadingScreenText {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-around;
+  color: #9880ff;
+  width: 100%;
+  height: 70vh;
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.LoadingScreen {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #9880ff;
+  color: #9880ff;
+  animation: dotElastic 1s infinite linear;
+}
+
+.LoadingScreen::before,
+.LoadingScreen::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 0;
+}
+
+.LoadingScreen::before {
+  left: -15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #9880ff;
+  color: #9880ff;
+  animation: dotElasticBefore 1s infinite linear;
+}
+
+.LoadingScreen::after {
+  left: 15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #9880ff;
+  color: #9880ff;
+  animation: dotElasticAfter 1s infinite linear;
+}
+
+.StockOut {
+  position: absolute;
+  z-index: 1;
+  color: white;
+  font-size: 25px;
+  margin-left: 20px;
+  padding: 20px;
+  font-weight: bold;
+  border-radius: 20px;
+  background-color: red;
+  cursor: default;
+}
+
+@keyframes dotElasticBefore {
+  0% {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(1, 1.5);
+  }
+  50% {
+    transform: scale(1, 0.67);
+  }
+  75% {
+    transform: scale(1, 1);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+@keyframes dotElastic {
+  0% {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1, 1.5);
+  }
+  75% {
+    transform: scale(1, 1);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+@keyframes dotElasticAfter {
+  0% {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1, 0.67);
+  }
+  75% {
+    transform: scale(1, 1.5);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
 }
 
 .MiddleButtons {
@@ -144,7 +257,12 @@ body {
   }
   .PageNumber {
     font-size: 90%;
+    padding-inline: 0;
   }
+  /* .ButtonMiddle {
+    width: 40%;
+    padding-inline: 10;
+  } */
 }
 
 @media (max-width: 900px) {
@@ -158,5 +276,9 @@ body {
     grid-template-columns: repeat(2, 3fr);
     width: 96%;
     margin-inline: 0;
+  }
+  .ButtonMiddle {
+    width: 40%;
+    padding-inline: 10;
   }
 }

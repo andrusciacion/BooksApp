@@ -4,7 +4,7 @@ import styles from './HomeComponent.module.css';
 import BookBox from './elements/BookBox';
 import Footer from './elements/FooterBar';
 import HomeImage from '../contentImages/bookshop-logo.svg';
-import store from '../store';
+// import store from '../store';
 
 export default class HomeComponent extends Component {
   state = {
@@ -23,7 +23,7 @@ export default class HomeComponent extends Component {
         return response.json();
       })
       .then((data) => {
-        data.map((item, index) => {
+        data.forEach((item, index) => {
           if (index < 3) {
             dataArr.push(item);
           }
@@ -53,14 +53,7 @@ export default class HomeComponent extends Component {
         <section className={styles.HomeBookSection}>
           <div className={styles.BooksItems}>
             {this.state.firstBooks.map((book, key) => (
-              <Link
-                to='/details'
-                state={{ book: book }}
-                key={key}
-                style={{ color: 'black', textDecoration: 'none' }}
-              >
-                <BookBox books={book} />
-              </Link>
+              <BookBox key={key} books={book} />
             ))}
           </div>
         </section>

@@ -2,7 +2,12 @@ import React, { Component, useEffect } from 'react';
 import styles from './BookDetails.module.css';
 import { useLocation, Link, Navigate } from 'react-router-dom';
 import { addBookCart } from '../actions';
+import Modal from './elements/ModalView';
 import store from '../store';
+
+const ADD_TO_CART = 'ADD_TO_CART';
+const DELETE = 'DELETE';
+const URL = 'http://localhost:3000/';
 
 export default class BookDetailsComponent extends Component {
   state = {
@@ -10,55 +15,59 @@ export default class BookDetailsComponent extends Component {
     numberOfBooks: 1,
     added: false,
     redirect: false,
+    showModal: false,
+    typeOfMessage: '',
+    bookInCart: false,
   };
 
   componentDidUpdate() {
-    this.sendData(this.state.book.id);
+    console.log(this.state.book);
   }
 
   receiveBook = (value) => {
     this.setState({ book: value });
   };
 
-  addToCart = () => {
-    let storedItem = localStorage.getItem(`${this.state.book.title}`);
+  async addToCart(method) {
     let numberOfBooks = this.state.numberOfBooks;
-    if (storedItem !== null) {
-      let quantity = Number(storedItem);
-      localStorage.setItem(this.state.book.title, (quantity += numberOfBooks));
-    } else {
-      localStorage.setItem(this.state.book.title, numberOfBooks);
-    }
+    let url = `${URL}cart${method === 'PUT' ? '/' + this.state.book.id : ''}`;
+
     this.setState({
       book: {
         ...this.state.book,
         stock: this.state.book.stock - numberOfBooks,
+        quantity: this.state.book.quantity + Number(numberOfBooks),
       },
     });
-    alert('Book added!');
+
+    await fetch(url, {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(this.state.book),
+    });
+
+    this.sendData();
     this.addToStoreCart();
-  };
+  }
 
   addToStoreCart = () => {
     store.dispatch(addBookCart({ quantity: 1 }));
   };
 
   async deleteBook() {
-    let approved = window.confirm('Delete book? ');
-    if (approved) {
-      let url = `http://localhost:3000/books-list/${this.state.book.id}`;
-      await fetch(url, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }).then(() => this.setState({ redirect: true }));
-    }
+    let url = `${URL}books-list/${this.state.book.id}`;
+    await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then(() => this.setState({ redirect: true }));
   }
 
-  async sendData(id) {
-    console.log(this.state.book);
-    let url = `http://localhost:3000/books-list/${id}`;
+  async sendData() {
+    let url = `${URL}books-list/${this.state.book.id}`;
     await fetch(url, {
       method: 'PUT',
       headers: {
@@ -66,6 +75,34 @@ export default class BookDetailsComponent extends Component {
       },
       body: JSON.stringify(this.state.book),
     });
+  }
+
+  async checkCart() {
+    let url = `${URL}cart`;
+    await fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].id === this.state.book.id) return this.addToCart('PUT');
+        }
+        return this.addToCart('POST');
+      });
+  }
+
+  async handleActions(button) {
+    switch (button.target.name) {
+      case ADD_TO_CART:
+        this.checkCart();
+        this.setState({ showModal: true, typeOfMessage: ADD_TO_CART });
+        break;
+      case DELETE:
+        this.setState({ showModal: true, typeOfMessage: DELETE });
+        break;
+      default:
+        break;
+    }
   }
 
   render() {
@@ -76,15 +113,25 @@ export default class BookDetailsComponent extends Component {
     return (
       <div className={styles.Parent}>
         <GetDetails useCallback={this.receiveBook} />
+        {this.state.showModal && (
+          <Modal
+            typeOfMessage={this.state.typeOfMessage}
+            dismissModal={() => {
+              this.setState({ showModal: false });
+            }}
+            deleteBook={() => this.deleteBook()}
+          />
+        )}
         <button
           className={styles.EditButton}
+          name={DELETE}
           style={{
             left: 10,
             top: 90,
-            width: '15%',
+            width: '11%',
             backgroundColor: '#cc0000',
           }}
-          onClick={() => this.deleteBook()}
+          onClick={(button) => this.handleActions(button)}
         >
           Delete
         </button>
@@ -135,8 +182,9 @@ export default class BookDetailsComponent extends Component {
               <section className={styles.BuyBookSection}>
                 <div className={styles.BuyBook}>
                   <button
+                    name={ADD_TO_CART}
                     className={styles.Button}
-                    onClick={() => this.addToCart()}
+                    onClick={(button) => this.handleActions(button)}
                     style={
                       this.state.book.stock === 0
                         ? { color: 'red', cursor: 'default' }
@@ -164,7 +212,11 @@ export default class BookDetailsComponent extends Component {
                     }
                     onChange={(input) =>
                       this.setState({
-                        numberOfBooks: Number(input.target.value),
+                        numberOfBooks:
+                          Number(input.target.value) > this.state.book.stock ||
+                          Number(input.target.value) < 1
+                            ? 1
+                            : Number(input.target.value),
                       })
                     }
                     disabled={this.state.book.stock === 0 ? true : false}

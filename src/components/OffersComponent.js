@@ -1,7 +1,6 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component } from 'react';
 import styles from './OffersComponent.module.css';
 import BookBox from './elements/BookBox';
-import { Link } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
 import store from '../store';
 import { addBookCart } from '../actions';
@@ -161,7 +160,7 @@ export default class OffersComponent extends Component {
             onChange={(event) => this.updateSearchValue(event)}
           />
 
-          <datalist id='search'>
+          <datalist id={this.state.searchValue.length < 2 ? '' : 'search'}>
             {this.state.booksFromStorage.map((item, key) => (
               <option key={key}>{item.title}</option>
             ))}
@@ -194,7 +193,7 @@ export default class OffersComponent extends Component {
               return null;
             } else {
               return (
-                <div>
+                <div key={key}>
                   {item.stock === 0 && (
                     <p className={styles.StockOut}>Out of stock</p>
                   )}

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import styles from './CartComponent.module.css';
 import Image from '../contentImages/empty.svg';
 import store from '../store';
 import BookBox from './elements/BookBox';
 import { addBookCart } from '../actions';
+import Modal from './elements/ModalView.js';
 
 export default class CartComponent extends Component {
   state = {
@@ -14,42 +15,39 @@ export default class CartComponent extends Component {
     numberOfBooks: [],
     totalPrice: 0,
     refresh: false,
+    showModal: false,
+    bookForRemove: {},
+    typeOfMessage: '',
+    redirect: false,
   };
 
-  async componentDidMount() {
-    await this.getBooks()
-      .then(() => this.getListCart())
-      .then(() => this.getBooksCart());
-    // await this.getBooks();
+  componentDidMount() {
+    this.getBooks();
   }
 
-  allStorage() {
-    var archive = [],
-      keys = Object.keys(localStorage),
-      i = 0,
-      key;
-    for (; (key = keys[i]); i++) {
-      archive.push(key + '=' + localStorage.getItem(key));
-    }
-    return archive;
+  componentDidUpdate() {
+    this.getBooks();
+    this.updateCart();
   }
-
-  // async getAllBooks() {
-  //   this.setState({ allBooks: [] });
-  //   store.getState().forEach((item, key) => {
-  //     this.state.allBooks[key] = item;
-  //   });
-  // }
 
   async getBooks() {
-    let url = 'http://localhost:3000/books-list';
+    let url = 'http://localhost:3000/cart';
     await fetch(url)
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        this.setState({ allBooks: data });
+        this.setState({ books: data });
       });
+    this.calculateTotalPrice();
+  }
+
+  checkInput(item) {
+    this.setState({
+      showModal: true,
+      bookForRemove: item,
+      typeOfMessage: 'REMOVE_BOOK',
+    });
   }
 
   async sendData(book) {
@@ -63,70 +61,91 @@ export default class CartComponent extends Component {
     });
   }
 
-  async getBooksCart() {
-    let data = [];
-    this.state.allBooks.sort(function (a, b) {
-      return a.title.localeCompare(b.title);
-    });
-    this.state.allBooks.forEach((item) => {
-      for (let i = 0; i < this.state.booksInCart.length; i++) {
-        if (item.title === this.state.booksInCart[i].book) {
-          item.quantity = this.state.booksInCart[i].number;
-          data.push(item);
-          this.state.totalPrice += item.price * item.quantity;
-        }
-      }
-      this.setState({ books: data });
+  async updateCart(book) {
+    let url = `http://localhost:3000/cart/${book.id}`;
+    await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(book),
     });
   }
 
-  getListCart() {
-    let list = this.allStorage();
-    for (let i = 0; i < list.length; i++) {
-      let position = list[i].match('=');
-      let book = list[i].slice(0, position.index);
-      let number = list[i].slice(position.index + 1);
-      this.state.booksInCart.push({ book: book, number: number });
-    }
+  async removeBook(number, book) {
+    let updatedBook = {
+      ...book,
+      stock: book.stock + number,
+      quantity: book.quantity - number,
+    };
+
+    let updatedBookCart = {
+      ...book,
+      stock: book.stock + number,
+      quantity: book.quantity - number,
+    };
+
+    let url = `http://localhost:3000/`;
+    await fetch(url + `books-list/${book.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedBook),
+    })
+      .then(
+        await fetch(url + `cart/${book.id}`, {
+          method: updatedBookCart.quantity === 0 ? 'DELETE' : 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedBookCart),
+        })
+      )
+      .then(() => this.dismissModal());
   }
 
-  async removeBook(book, index) {
-    let removedBooks = window.prompt('Number of removed books', book.quantity);
-    if (removedBooks > 0 && removedBooks < book.quantity) {
-      localStorage.setItem(book.title, (book.quantity -= removedBooks));
-    } else if (removedBooks === book.quantity) {
-      localStorage.removeItem(book.title);
-    }
-    console.log(book);
-    await this.sendData({ ...book, stock: book.stock + Number(removedBooks) });
-    this.refreshPage(index, book.quantity, removedBooks);
+  checkoutCart() {
+    this.setState({ showModal: true, typeOfMessage: 'CHECKOUT' });
+    console.log('Checkout');
   }
 
-  refreshPage = (...props) => {
-    let totalPrice = 0;
-    props[1] === props[2] && this.state.books.splice(props[0], 1);
-    this.state.books.forEach((item) => {
-      totalPrice += item.price;
-    });
-    this.setState({ totalPrice: totalPrice * props[1] });
-    this.refreshNavBar();
-  };
+  goToDelivery() {
+    this.setState({ showModal: false, redirect: true });
+  }
 
-  refreshNavBar = () => {
+  dismissModal() {
+    this.setState({ showModal: false });
+  }
+
+  updateCart() {
     store.dispatch(addBookCart({ quantity: 1 }));
-  };
+  }
 
-  async checkoutCart() {
-    for (let book of this.state.books) {
-      localStorage.removeItem(book.title);
-    }
-    this.setState({ books: [], totalPrice: 0 });
-    this.refreshNavBar();
+  calculateTotalPrice() {
+    let totalPrice = 0;
+    this.state.books.forEach((book) => {
+      totalPrice += book.quantity * book.price;
+    });
+    this.state.totalPrice = totalPrice;
   }
 
   render() {
+    if (this.state.redirect) {
+      return <Navigate to='/delivery' />;
+    }
     return (
       <div id='cart' className={styles.Cart}>
+        {this.state.showModal && (
+          <Modal
+            typeOfMessage={this.state.typeOfMessage}
+            removeBook={this.removeBook}
+            bookForRemove={this.state.bookForRemove}
+            dismissModal={() => this.setState({ showModal: false })}
+            checkout={() => this.goToDelivery()}
+          />
+        )}
+
         {this.state.totalPrice > 0 && (
           <button className={styles.TotalButton}>
             Total: {this.state.totalPrice}$
@@ -135,14 +154,14 @@ export default class CartComponent extends Component {
         {this.state.books.length > 0 ? (
           <div className={styles.Books}>
             {this.state.books.map((item, key) => (
-              <div className={styles.RemoveBox}>
+              <div key={key} className={styles.RemoveBox}>
                 <div className={styles.Information}>
                   Books:
                   <strong>{item.quantity}</strong>
                 </div>
                 <button
                   className={styles.RemoveButton}
-                  onClick={() => this.removeBook(item, key)}
+                  onClick={() => this.checkInput(item)}
                   type='button'
                 >
                   Remove

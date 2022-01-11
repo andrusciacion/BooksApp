@@ -7,9 +7,11 @@ import CartComponent from './components/CartComponent';
 import BookForm from './components/BookFormComponent';
 import Edit from './components/EditComponent';
 import Favourites from './components/FavouritesComponent';
+import Contact from './components/ContactComponent';
+import Delivery from './components/DeliveryComponent';
 import store from './store';
 
-function App() {
+function App(props) {
   return (
     <>
       <BrowserRouter>
@@ -22,7 +24,8 @@ function App() {
           <Route path='/favourites' element={<Favourites />} />
           <Route path='/add-book' element={<BookForm />} />
           <Route path='/edit' element={<Edit />} />
-          <Route path='/contact' element={null} />
+          <Route path='/contact' element={<Contact />} />
+          <Route path='/delivery' element={<Delivery />} />
         </Routes>
       </BrowserRouter>
     </>

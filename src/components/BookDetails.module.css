@@ -74,6 +74,10 @@
   text-align: center;
 }
 
+.BooksInput {
+  outline: none;
+}
+
 .BuyBook {
   display: flex;
   justify-content: center;

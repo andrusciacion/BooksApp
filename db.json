@@ -430,9 +430,10 @@
       "title": "Absalom, Absalom!",
       "year": 1936,
       "price": 258,
-      "stock": 0,
+      "stock": 11,
       "favourite": true,
-      "id": 30
+      "id": 30,
+      "quantity": 0
     },
     {
       "author": "William Faulkner",
@@ -642,7 +643,8 @@
       "price": 256,
       "stock": 0,
       "favourite": true,
-      "id": 45
+      "id": 45,
+      "quantity": 11
     },
     {
       "author": "James Joyce",
@@ -850,9 +852,10 @@
       "title": "Buddenbrooks",
       "year": 1901,
       "price": 25,
-      "stock": 0,
+      "stock": 2,
       "favourite": false,
-      "id": 60
+      "id": 60,
+      "quantity": 1
     },
     {
       "author": "Thomas Mann",
@@ -920,10 +923,10 @@
       "title": "Beloved",
       "year": 1987,
       "price": 59,
-      "stock": 58,
-      "favourite": true,
+      "stock": 65,
+      "favourite": false,
       "id": 65,
-      "quantity": "3"
+      "quantity": 7
     },
     {
       "author": "Murasaki Shikibu",
@@ -1103,9 +1106,10 @@
       "title": "Bostan",
       "year": 1257,
       "price": 159,
-      "stock": 0,
+      "stock": 7,
       "favourite": false,
-      "id": 78
+      "id": 78,
+      "quantity": 1
     },
     {
       "author": "Tayeb Salih",
@@ -1271,10 +1275,10 @@
       "title": "Anna Karenina",
       "year": 1877,
       "price": 59,
-      "stock": 0,
+      "stock": 17,
       "favourite": true,
       "id": 90,
-      "quantity": "-6"
+      "quantity": 1
     },
     {
       "author": "Leo Tolstoy",
@@ -1402,5 +1406,26 @@
       "favourite": false,
       "id": 99
     }
-  ]
+  ],
+  "contact": [
+    {
+      "firstName": "",
+      "lastName": "",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "message": "",
+      "id": 0
+    },
+    {
+      "firstName": "Name",
+      "lastName": "Last",
+      "email": "test@mail.com",
+      "phone": "",
+      "address": "",
+      "message": "Test message",
+      "id": 1
+    }
+  ],
+  "cart": []
 }

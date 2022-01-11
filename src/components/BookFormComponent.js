@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import styles from './BookFormComponent.module.css';
-import { addBook } from '../actions/index';
-import store from '../store';
+import { Navigate } from 'react-router-dom';
+// import { addBook } from '../actions/index';
+// import store from '../store';
 
 export default class BookFormComponent extends Component {
   state = {
@@ -13,8 +14,9 @@ export default class BookFormComponent extends Component {
       pages: '',
       imageLink: 'images/the-divine-comedy.jpg',
       price: '',
-      stock: 0,
+      stock: '',
     },
+    redirect: false,
   };
 
   componentDidMount() {
@@ -70,7 +72,7 @@ export default class BookFormComponent extends Component {
         break;
       case 'stock':
         this.setState({
-          book: { ...this.state.book, stock: value.target.value },
+          book: { ...this.state.book, stock: Number(value.target.value) },
         });
         break;
       default:
@@ -95,7 +97,7 @@ export default class BookFormComponent extends Component {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(this.state.book),
-      });
+      }).then(() => this.setState({ redirect: true }));
     }
   }
 
@@ -110,6 +112,9 @@ export default class BookFormComponent extends Component {
   }
 
   render() {
+    if (this.state.redirect) {
+      return <Navigate to='/offers' />;
+    }
     return (
       <div className={styles.Parent}>
         {/* <GetStoredBooks useCallback={this.test} /> */}
@@ -174,7 +179,7 @@ export default class BookFormComponent extends Component {
           <input
             type='number'
             name='stock'
-            value={this.state.book.price}
+            value={this.state.book.stock}
             placeholder='Stock'
             onChange={this.saveBookDetails}
             required

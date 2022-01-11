@@ -1,8 +1,9 @@
 import React, { Component, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import styles from './EditComponent.module.css';
-import store from '../store';
-import { editBook } from '../actions';
+import Modal from './elements/ModalView.js';
+// import store from '../store';
+// import { editBook } from '../actions';
 
 export default class EditComponent extends Component {
   constructor(props) {
@@ -11,6 +12,7 @@ export default class EditComponent extends Component {
       book: {},
       changedBook: {},
       updated: false,
+      showModal: false,
     };
     this.reference = null;
     this.setBook = this.setBook.bind(this);
@@ -78,20 +80,19 @@ export default class EditComponent extends Component {
   };
 
   updateBook = () => {
-    let approved = window.confirm('Save changes? ');
+    // let approved = window.confirm('Save changes? ');
     let changedBook = this.state.changedBook;
     let book = this.state.book;
-    if (approved === true) {
-      for (let value in changedBook) {
-        console.log(book[value]);
-        if (changedBook[value] !== book[value]) {
-          book[value] = changedBook[value];
-        }
+    // if (approved === true) {
+    for (let value in changedBook) {
+      if (changedBook[value] !== book[value]) {
+        book[value] = changedBook[value];
       }
+      // }
       // store.dispatch(editBook(this.state.book));
       this.sendData(book.id);
       this.reference.reset();
-      this.setState({ changedBook: {} });
+      this.setState({ changedBook: {}, showModal: false });
     }
   };
 
@@ -106,9 +107,21 @@ export default class EditComponent extends Component {
     });
   }
 
+  checkInput = () => {
+    let bookDetails = this.state.changedBook;
+    if (Object.keys(bookDetails).length > 0) this.setState({ showModal: true });
+  };
+
   render() {
     return (
       <div className={styles.Parent}>
+        {this.state.showModal && (
+          <Modal
+            typeOfMessage='SAVE_CHANGES'
+            saveBook={this.updateBook}
+            dismissModal={() => this.setState({ showModal: false })}
+          />
+        )}
         <GetBook callback={this.setBook} />
         <div className={styles.EditBook}>
           <section className={styles.InitialInfo}>
@@ -167,7 +180,7 @@ export default class EditComponent extends Component {
             />
           </form>
         </div>
-        <button onClick={this.updateBook} className={styles.SaveButton}>
+        <button onClick={this.checkInput} className={styles.SaveButton}>
           Save
         </button>
       </div>
@@ -177,9 +190,9 @@ export default class EditComponent extends Component {
 
 function GetBook(props) {
   const location = useLocation();
+  let book = location.state.book;
   useEffect(() => {
-    props.callback(location.state.book);
+    props.callback(book);
   }, []);
-
   return null;
 }

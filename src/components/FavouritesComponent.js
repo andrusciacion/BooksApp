@@ -40,7 +40,7 @@ export default class FavouritesComponent extends Component {
         {this.state.favouriteBooks.length > 0 ? (
           <div className={styles.Books}>
             {this.state.favouriteBooks.map((item, key) => (
-              <div className={styles.FavouriteBox}>
+              <div key={key} className={styles.FavouriteBox}>
                 {item.stock === 0 && (
                   <p className={styles.StockOut}>Out of stock</p>
                 )}

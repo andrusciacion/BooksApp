@@ -8,18 +8,20 @@ import { useSelector } from 'react-redux';
 export default function NavigationBar(props) {
   const [numberOfBooks, setnumberOfBooks] = useState(0);
   const [numberOfFavourites, setnumberOfFavourites] = useState(0);
+  const [booksInCart, setBooksInCart] = useState(0);
 
-  useSelector((state) => state);
+  let state = useSelector((state) => state);
 
   useEffect(() => {
-    let count = 0;
-    let keys = Object.keys(localStorage);
-    for (let i = 0; i < keys.length; i++) {
-      count += Number(localStorage.getItem(keys[i]));
-    }
-    setnumberOfBooks(count);
-    getFavourites();
-  });
+    // let count = 0;
+    // let keys = Object.keys(localStorage);
+    // for (let i = 0; i < keys.length; i++) {
+    //   count += Number(localStorage.getItem(keys[i]));
+    // }
+    // setnumberOfBooks(count);
+    getFavourites().then(getBooksCart());
+    // getBooksCart();
+  }, [state]);
 
   async function getFavourites() {
     let url = 'http://localhost:3000/books-list';
@@ -35,6 +37,21 @@ export default function NavigationBar(props) {
           }
         }
         setnumberOfFavourites(count);
+      });
+  }
+
+  async function getBooksCart() {
+    let url = 'http://localhost:3000/cart';
+    let count = 0;
+    await fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        for (let i = 0; i < data.length; i++) {
+          count += data[i].quantity;
+        }
+        setBooksInCart(count);
       });
   }
 
@@ -72,9 +89,9 @@ export default function NavigationBar(props) {
           <li>
             <Link to={'/cart'} className={styles.NavigationLogo}>
               <ImCart />
-              {numberOfBooks > 0 && (
+              {booksInCart > 0 && (
                 <div className={styles.Badge}>
-                  <div className={styles.BadgeCircle}>{numberOfBooks}</div>
+                  <div className={styles.BadgeCircle}>{booksInCart}</div>
                 </div>
               )}
             </Link>

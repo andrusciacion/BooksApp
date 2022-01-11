@@ -1,51 +1,66 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import './HomeComponent.css';
-import books from '../books/books.json';
-import BookBox from './elements/BookBoxElement';
-import Footer from './elements/FooterElement';
+import styles from './HomeComponent.module.css';
+import BookBox from './elements/BookBox';
+import Footer from './elements/FooterBar';
+import HomeImage from '../contentImages/bookshop-logo.svg';
+// import store from '../store';
 
 export default class HomeComponent extends Component {
   state = {
-    firstBooks: [{ image: '', title: '', author: '' }],
+    firstBooks: [],
   };
 
   componentDidMount() {
     this.getBooks();
   }
 
-  getBooks() {
-    let data = [];
-    books.forEach((item, index) => {
-      if (index < 3) {
-        data.push(item);
-      }
-    });
-    this.setState({ firstBooks: data });
+  async getBooks() {
+    let dataArr = [];
+    let url = 'http://localhost:3000/books-list';
+    await fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        data.forEach((item, index) => {
+          if (index < 3) {
+            dataArr.push(item);
+          }
+        });
+      })
+      .then(() => this.setState({ firstBooks: dataArr }));
   }
+
+  // getBooks() {
+  //   let data = [];
+  //   let books = store.getState();
+  //   books.forEach((item, index) => {
+  //     if (index < 3) {
+  //       data.push(item);
+  //     }
+  //   });
+  //   this.setState({ firstBooks: data });
+  // }
 
   render() {
     return (
-      <div className='home-component'>
-        <section className='welcome-section'>
-          <h1>Welcome to our book shop</h1>
+      <div className={styles.HomeComponent}>
+        <section className={styles.WelcomeSection}>
+          <img className={styles.HomeImage} src={HomeImage} alt='Book' />
         </section>
         <h1>Some offers</h1>
-        <section className='home-book-section'>
-          {this.state.firstBooks.length > 2 ? (
-            <div className='books-items'>
-              <BookBox books={this.state.firstBooks[0]} />
-              <BookBox books={this.state.firstBooks[1]} />
-              <BookBox books={this.state.firstBooks[2]} />
-            </div>
-          ) : null}
+        <section className={styles.HomeBookSection}>
+          <div className={styles.BooksItems}>
+            {this.state.firstBooks.map((book, key) => (
+              <BookBox key={key} books={book} />
+            ))}
+          </div>
         </section>
-        <Link className='link' to='/offers'>
+        <Link className={styles.Link} to='/offers'>
           Show more...
         </Link>
-        <section className='footer'>
-          <Footer />
-        </section>
+        <Footer />
       </div>
     );
   }

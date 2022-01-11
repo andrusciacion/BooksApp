@@ -1,0 +1,115 @@
+.Navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+  width: 100%;
+  background: linear-gradient(217deg, #6600ff, rgba(255, 0, 0, 0) 80%),
+    linear-gradient(127deg, #00cc99, rgba(0, 0, 255, 0) 80%);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.Navigation h1 {
+  margin-left: 30px;
+  font-size: 35px;
+}
+
+.Navigation a {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+}
+
+.NavigationLogo {
+  display: flex;
+  justify-content: center;
+  width: 50px;
+}
+
+.Badge {
+  height: 55px;
+  font-size: 16px;
+  margin-left: 2px;
+  color: white;
+}
+
+.BadgeCircle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 20px;
+  height: 20px;
+  padding-bottom: 1px;
+  border-radius: 50%;
+}
+
+.NavigationElements {
+  display: flex;
+  flex-direction: row;
+  width: 500px;
+  margin-bottom: 0;
+  list-style-type: none;
+  margin-top: 0;
+  margin-right: 30px;
+}
+
+.NavigationElements li {
+  display: flex;
+  align-items: center;
+  height: 80px;
+  margin-inline: auto;
+}
+
+.NavigationElements a {
+  padding-inline: 10px;
+  font-size: 25px;
+  font-weight: bolder;
+  text-decoration: none;
+  color: white;
+}
+
+.NavigationElements li:hover {
+  background-color: rgba(211, 211, 211, 0.397);
+  border-radius: 10px;
+}
+
+.DropdownContent {
+  visibility: hidden;
+  opacity: 0;
+  margin-top: 130px;
+  background-color: rgba(76, 0, 130, 0.507);
+  position: absolute;
+  transition: all 0.5s ease;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  list-style-type: none;
+  border-radius: 10px;
+  padding-inline-start: 0;
+}
+
+.DropdownContent li {
+  height: 50px;
+}
+
+.DropdownContent a {
+  margin-left: 0;
+}
+
+ul li:hover > .DropdownContent,
+ul li .DropdownContent li:hover {
+  visibility: visible;
+  opacity: 1;
+}
+
+@media (max-width: 700px) {
+  .Navigation h1,
+  .NavigationElements a {
+    font-size: 20px;
+  }
+  .NavigationElements {
+    width: 300px;
+  }
+}

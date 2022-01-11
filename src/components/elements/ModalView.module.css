@@ -1,0 +1,59 @@
+.Button {
+  height: 45px;
+  width: 40%;
+  margin-top: 30px;
+  font-size: 25px;
+  font-weight: bold;
+  background-color: #00c090f3;
+  color: white;
+  border-radius: 15px;
+  border-color: transparent;
+  cursor: pointer;
+}
+
+.DeleteButtons {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.ModalParent {
+  position: fixed;
+  display: flex;
+  top: 0;
+  width: 100vw;
+  height: 100%;
+  background-color: rgba(122, 120, 120, 0.205);
+  z-index: 1;
+}
+
+.Modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-inline: auto;
+  margin-block: auto;
+  color: black;
+  width: 40%;
+  height: 250px;
+  background-color: rgba(218, 218, 218, 0.952);
+  border-radius: 15px;
+  margin-top: 200px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.Modal h1 {
+  text-align: center;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+  margin-top: 0;
+  color: white;
+  background: linear-gradient(217deg, #6600ff, rgba(255, 0, 0, 0) 80%),
+    linear-gradient(127deg, #00cc99, rgba(0, 0, 255, 0) 80%);
+  width: 100%;
+}
+
+.Modal p {
+  margin-top: 10px;
+  font-size: 25px;
+}

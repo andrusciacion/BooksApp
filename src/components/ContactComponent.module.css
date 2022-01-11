@@ -1,0 +1,117 @@
+.Contact {
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 20px;
+  padding-top: 20px;
+}
+
+.ContactForm {
+  width: 50%;
+  background-color: #00cc9931;
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+}
+
+.ContactForm h1 {
+  padding-left: 30px;
+}
+
+.ContactForm input {
+  width: 90%;
+  margin-inline: auto;
+  height: 50px;
+  margin-top: 20px;
+  border-radius: 15px;
+  font-size: 23px;
+  border-color: transparent;
+  padding-left: 10px;
+}
+
+.ContactForm textarea {
+  width: 90%;
+  margin-inline: auto;
+  margin-top: 20px;
+  border-radius: 15px;
+  padding: 5px;
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  border-color: transparent;
+}
+
+.ContactForm input:focus,
+.ContactForm textarea:focus {
+  transition: 1s;
+  outline: none;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.EmailInput:focus {
+  border: 3px solid red;
+}
+
+.FirstLastName,
+.EmailPhone {
+  display: flex;
+  width: 94%;
+  justify-content: space-around;
+  margin-inline: auto;
+}
+
+.FirstLastName input,
+.EmailPhone input {
+  width: 85%;
+  height: 50px;
+  margin-top: 10px;
+  margin-inline: 10px;
+  border-radius: 15px;
+  font-size: 23px;
+  padding-left: 10px;
+}
+
+.Image {
+  width: 40%;
+}
+
+.SendButton {
+  margin-top: 40px;
+  width: 50%;
+  height: 50px;
+  font-size: 25px;
+  font-weight: bold;
+  color: white;
+  background-color: rgb(72, 161, 76);
+  border-radius: 15px;
+  border-color: transparent;
+  margin-inline: auto;
+  cursor: pointer;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.SendButton:active {
+  box-shadow: none;
+}
+
+@media (max-width: 900px) {
+  .Contact {
+    display: block;
+  }
+  .FirstLastName,
+  .EmailPhone {
+  }
+  .Image {
+    width: 100%;
+  }
+  .ContactForm {
+    width: 100%;
+  }
+
+  .FirstLastName,
+  .EmailPhone {
+    display: flex;
+    width: 94%;
+    justify-content: space-around;
+    margin-inline: auto;
+  }
+}

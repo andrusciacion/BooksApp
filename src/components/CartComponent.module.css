@@ -1,0 +1,136 @@
+.Cart {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  flex-direction: column;
+}
+
+.TotalButton {
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 24px;
+  border: 1px gray solid;
+  border-radius: 10px;
+  padding-block: 5px;
+}
+
+.CheckoutButton {
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 24px;
+  color: white;
+  background-color: rgba(72, 161, 77, 1);
+  border-radius: 10px;
+  border: none;
+  padding: 10px;
+  margin-bottom: 50px;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.CheckoutButton:active {
+  box-shadow: none;
+}
+
+.Books {
+  padding-top: 25px;
+  padding-bottom: 50px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 30px;
+}
+
+.Image {
+  width: 30%;
+}
+
+.NoItemsText {
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.RemoveBox {
+  /* display: flex;
+  flex-direction: column;
+  align-items: center; */
+  background-color: #6600ff15;
+  border-radius: 15px;
+}
+
+.RemoveBox:hover > .Information {
+  visibility: visible;
+}
+
+.Information {
+  position: absolute;
+  visibility: hidden;
+  font-size: 20px;
+  margin-top: 45px;
+  width: 100px;
+  text-align: center;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.603);
+  border-radius: 10px;
+}
+
+.RemoveButton {
+  height: 40px;
+  width: 100%;
+  border-radius: 15px;
+  margin-bottom: 35px;
+  border: none;
+  background-color: rgba(255, 0, 119, 0.281);
+  font-size: 25px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  transition: 0.2s;
+}
+
+.RemoveButton:active {
+  box-shadow: none;
+  transition: 0.2s;
+}
+
+.Link {
+  text-decoration: none;
+  margin-top: 30px;
+  font-size: 22px;
+  border: 2px solid gray;
+  padding: 5px;
+  border-radius: 15px;
+  color: black;
+  font-weight: 500;
+  transition: 0.5s;
+  margin-bottom: 20px;
+}
+
+.Link:hover {
+  border-color: rgba(72, 161, 77, 0.3);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  background-color: rgba(72, 161, 77, 0.5);
+  transition: background-color 0.5s;
+  color: white;
+}
+
+@media (max-width: 1400px) {
+  .Books {
+    grid-template-columns: repeat(4, 3fr);
+  }
+}
+
+@media (max-width: 1200px) {
+  .Books {
+    grid-template-columns: repeat(3, 3fr);
+  }
+}
+
+@media (max-width: 800px) {
+  .Books {
+    grid-template-columns: repeat(2, 3fr);
+  }
+}
